@@ -1,0 +1,27 @@
+
+
+
+
+    <form action="/search/" method="POST">´{% csrf_token %}
+        <select name="profe_selection">
+
+            <option>Todos los profesores</option>
+            {% for item in profe_list %}
+                <option value="{{item.profe}}">{{item.profe}}</option>
+            {% endfor %}
+        
+        </select>
+        <select name="grupo_selection">
+            <option>Todos los Grupos</option>
+            {% for item in grupos_list %}
+                <option value="{{item.grupo}}">{{item.grupo}}</option>
+            {% endfor %}
+        
+        </select>
+        <input type="date" id="class_date" name="class_date"
+            value=""
+            min="2020-10-01" max="2021-12-31">
+
+        <button type="submit">buscar</button>
+    
+    </form>

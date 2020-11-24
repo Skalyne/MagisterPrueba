@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+{% if clases_searched %}
+    {% for item in clases_searched %}
+        <p>{{item.profe}}</p>
+    {% endfor %}
+
+{% endif %}
+
+{% endblock content %}

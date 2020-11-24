@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+
+<div class="container">
+    {% for item in all_classes %}
+        <p>{{item.grupo}} / {{item.profe}}</p>
+    {% endfor %}
+
+</div>
+{% endblock content %}
+
