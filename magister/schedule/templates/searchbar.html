@@ -39,12 +39,28 @@
 
         
         </select>
+        <select name="day_selection">
+            
+            <option>Todos los Dias</option>
+
+            {% if days_list %}
+            {% for item in days_list %}
+                <option value="{{item.dia}}">{{item.dia}}</option>
+            {% endfor %}
+            {% endif %}
+
+        
+        </select>
         <input type="date" id="class_date" name="class_date"
             value=""
             min="2020-10-01" max="2021-12-31">
+
         <button type="submit">buscar</button>
-    
+
+
+        <button> <a href="{% url 'index' %}"></a> Limpiar</a></button>
     </form>
+    
           </li>
       </ul>
     </div>

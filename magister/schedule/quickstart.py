@@ -47,8 +47,6 @@ def get_sheet():
     sheet = service.spreadsheets()
     return sheet
 
-
-
 def read_horarios(sheet):
 
     result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
@@ -80,13 +78,10 @@ def read_profesores(sheet):
             print(row)
         return values_list
 
-
 def write_to_spreadsheet(sheet,teacherRequestP):
     range_ = 'Profesores!A1:D1'
     value_input_option = 'RAW'
     insert_data_option = 'INSERT_ROWS'
-
-
     value_range_body = {
         'values': [
             [teacherRequestP['DNI'], 
@@ -102,7 +97,3 @@ def write_to_spreadsheet(sheet,teacherRequestP):
         valueInputOption=value_input_option,
         insertDataOption=insert_data_option,
         body=value_range_body).execute()
-
-
-
-

@@ -3,7 +3,6 @@ from gsheets import mixins
 from uuid import uuid4
 from django.urls import reverse
 
-# Create your models here.
 
 class Profesores(models.Model):
     DNI = models.CharField(max_length=10, primary_key=True)
@@ -12,9 +11,7 @@ class Profesores(models.Model):
     movil = models.CharField(max_length=10, blank=True, null=True)
 
     def get_absolute_url(self):
-
         return reverse('index')
-
 
 class Schedule(models.Model):
     id = models.AutoField(primary_key=True)

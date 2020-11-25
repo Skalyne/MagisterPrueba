@@ -7,91 +7,75 @@ from .forms import Profesform
 from django.http import HttpResponseRedirect
 
 
-
-
+def actualizar_profesores():
+    data_sheet = read_profesores(get_sheet())    
+    for item in data_sheet:        
+            obj = Profesores(DNI = item[0],
+            nombre = item[1],
+            apellido = item[2])
+            try:
+                obj.movil = item[3]
+                obj.save()
+            except:
+                obj.save()
 
 def actualizar_horarios():
     data_sheet = read_horarios(get_sheet())    
     for item in data_sheet:
         
         obj = Schedule(id = item[0],
-        fecha = datetime.strptime(item[1], '%d/%m/%Y').strftime("%Y-%m-%d"),
-        dia = item[2],
-        h_inicio= item[3],
-        h_fin= item[4],
-        grupo= item[5],
-        profe= Profesores.objects.get(DNI = item[6].replace("'",""))
+            fecha = datetime.strptime(item[1], '%d/%m/%Y').strftime("%Y-%m-%d"),
+            dia = item[2],
+            h_inicio = item[3],
+            h_fin = item[4],
+            grupo = item[5],
+            profe = Profesores.objects.get(DNI = item[6].replace("'",""))
         )
-        obj.save()
+        obj.save()        
 
-        
-        print(item)
-        
-def actualizar_profesores():
-    data_sheet = read_profesores(get_sheet())    
-    for item in data_sheet:
-        
-        obj = Profesores(DNI = item[0],
-        nombre = item[1],
-        apellido = item[2]
-        )
-        try:
-            obj.movil = item[3]
-            obj.save()
-        except:
-            obj.save()
-
-
-
-
-
-
-# Create your views here.
-
-        
+# --VISTAS        
 def get_name(request):
     if request.method == 'POST':        
-        form = Profesform(request.POST)
-        
+        form = Profesform(request.POST)        
         write_to_spreadsheet(get_sheet(),request.POST)
+        actualizar_profesores()
         if form.is_valid():
             return HttpResponseRedirect('/')
     else:
         form = Profesform()
     return render(request, 'add_profe.html', {'form': form})
 
-
 def index_view(request):
-
+    actualizar_profesores()
     actualizar_horarios()
     context = {}
     clases = Schedule.objects.all()
-
+    days_list = Schedule.objects.values('dia').distinct()
     profe_list = Schedule.objects.values('profe').distinct()
     grupos_list = Schedule.objects.values('grupo').distinct()
 
     context = {
         "all_classes": clases,
         'profe_list': profe_list,
-        'grupos_list': grupos_list
+        'grupos_list': grupos_list,
+        'days_list':days_list,
     }
 
     return render(request, 'index.html', context)
-
 
 def search_view(request):   
 
     profe_list = Schedule.objects.values('profe').distinct()
     grupos_list = Schedule.objects.values('grupo').distinct()
     clases_searched = Schedule.objects.all()
-    
+    days_list = Schedule.objects.values('dia').distinct()
     
     context = {
         'profe_list': profe_list,
         'grupos_list': grupos_list,
+        'days_list':days_list,
         'clases_searched':clases_searched,
     }
-
     context = {}
     filters={}
 
@@ -106,12 +90,9 @@ def search_view(request):
         if data['grupo_selection'] != 'Todos los Grupos':
             filters['grupo'] = data['grupo_selection']
 
-
-
-            #datetime.strptime(data['class_date'], '%Y-%m-%d').strftime("%d/%m/%Y")
-        print(data)
+        if (data['day_selection'] != 'Todos los Dias'):    
+            filters['dia'] = data['day_selection']  
 
     context['clases_searched'] = Schedule.objects.filter(**filters)
-
 
     return render(request, 'search.html', context)
