@@ -2,11 +2,39 @@
 
 
 {% block content %}
+<div class='container'>
 {% if clases_searched %}
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Fecha</th>
+        <th scope="col">Dia</th>
+        <th scope="col">H Inicio</th>
+        <th scope="col">H Fin</th>
+        <th scope="col">Grupo</th>
+        <th scope="col">Profesor</th>
+      </tr>
+    </thead>
+    <tbody>
     {% for item in clases_searched %}
-        <p>{{item.profe}}</p>
+    <tr>
+        <th scope="id">{{item.id}}</th>
+        <td>{{item.fecha}}</td>
+        <td>{{item.dia}}</td>
+        <td>{{item.h_inicio}}</td>
+        <td>{{item.h_fin}}</td>
+        <td>{{item.grupo}}</td>
+        <td>{{item.profe.DNI}}</td>
+      </tr>
     {% endfor %}
-
+</tbody>
+</table>
 {% endif %}
+</div>
 
 {% endblock content %}
+
+
+
+

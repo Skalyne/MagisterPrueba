@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% block title %}Add Teacher{% endblock %}
+<div class="container">
+<h1>Add Teacher</h1>
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form>
+</div>
+
+
+
+
+
+{% endblock %}

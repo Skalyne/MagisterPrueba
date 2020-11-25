@@ -1,27 +1,53 @@
 
-
-
-
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{% url 'index' %}">SCHEDULE FINDER</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'add_profe' %}">Add Teacher</a>
+        </li>
+        <li class="nav-item">
+            
     <form action="/search/" method="POST">´{% csrf_token %}
-        <select name="profe_selection">
+        <select name="profe_selection" >
 
             <option>Todos los profesores</option>
+
+            {% if profe_list %}
             {% for item in profe_list %}
                 <option value="{{item.profe}}">{{item.profe}}</option>
             {% endfor %}
+            {% endif %}
+
         
         </select>
         <select name="grupo_selection">
+            
             <option>Todos los Grupos</option>
+
+            {% if grupos_list %}
             {% for item in grupos_list %}
                 <option value="{{item.grupo}}">{{item.grupo}}</option>
             {% endfor %}
+            {% endif %}
+
         
         </select>
         <input type="date" id="class_date" name="class_date"
             value=""
             min="2020-10-01" max="2021-12-31">
-
         <button type="submit">buscar</button>
     
     </form>
+          </li>
+      </ul>
+    </div>
+  </nav>
+
+  

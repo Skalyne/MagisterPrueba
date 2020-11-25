@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'magister.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'pruebamagister',
+        'NAME': 'retomagister',
         'USER':'postgres',
         'PASSWORD':'0912',
         'HOST':'127.0.0.1',

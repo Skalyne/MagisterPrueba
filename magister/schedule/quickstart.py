@@ -10,13 +10,15 @@ from google.auth.transport.requests import Request
 
 
 # If modifying these scopes, delete the file token.pickle.
-SCOPES = ['https://www.googleapis.com/auth/spreadsheets.compose']
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 # The ID and range of a sample spreadsheet.
 SAMPLE_SPREADSHEET_ID = '1aGYoYb_ZTXwB_1q9NcsCoPcKfsekRx5wvYB8DLYA4gI'
 SAMPLE_RANGE_NAME = 'A2:G'
 
-def main():
+
+def get_sheet():
+
     """Shows basic usage of the Sheets API.
     Prints values from a sample spreadsheet.
     """
@@ -33,7 +35,7 @@ def main():
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
+                'schedule/credentials.json', SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open('token.pickle', 'wb') as token:
@@ -43,6 +45,12 @@ def main():
 
     # Call the Sheets API
     sheet = service.spreadsheets()
+    return sheet
+
+
+
+def read_horarios(sheet):
+
     result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
                                 range=SAMPLE_RANGE_NAME).execute()
 
@@ -56,7 +64,45 @@ def main():
             values_list.append(row)
         return values_list
 
+def read_profesores(sheet):
+    range_ = 'Profesores!A2:D'
+    request = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
+                                range=range_)
+    response = request.execute()
+
+    values = response.get('values', [])
+    values_list = []
+    if not values:
+        print('No data found.')
+    else:
+        for row in values:
+            values_list.append(row)
+            print(row)
+        return values_list
 
 
-if __name__ == '__main__':
-    main()
+def write_to_spreadsheet(sheet,teacherRequestP):
+    range_ = 'Profesores!A1:D1'
+    value_input_option = 'RAW'
+    insert_data_option = 'INSERT_ROWS'
+
+
+    value_range_body = {
+        'values': [
+            [teacherRequestP['DNI'], 
+            teacherRequestP['nombre'], 
+            teacherRequestP['apellido'], 
+            teacherRequestP['movil']]
+        ]
+    }
+
+    request = sheet.values().append(
+        spreadsheetId=SAMPLE_SPREADSHEET_ID,
+        range=range_,
+        valueInputOption=value_input_option,
+        insertDataOption=insert_data_option,
+        body=value_range_body).execute()
+
+
+
+
